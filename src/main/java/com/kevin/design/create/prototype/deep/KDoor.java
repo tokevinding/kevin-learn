@@ -11,7 +11,7 @@ import com.kevin.design.create.prototype.ToNoClone;
 public class KDoor {
 
     public static void main(String[] args) {
-        DeepClone origin = new DeepClone("shallow clone", new ToClone(" to clone"), new ToNoClone(" to no clone"));
+        DeepClone origin = new DeepClone("deep clone", new ToClone(" to clone"), new ToNoClone(" to no clone"));
         System.out.println("before: " + origin);
         DeepClone clone = (DeepClone)origin.clone();
         System.out.println("after: " + clone);
