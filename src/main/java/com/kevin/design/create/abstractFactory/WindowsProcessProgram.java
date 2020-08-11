@@ -10,6 +10,6 @@ import com.kevin.tools.utils.ConsoleOutputUtils;
 public class WindowsProcessProgram implements KProcessProgram {
     @Override
     public void process() {
-        ConsoleOutputUtils.print("Windows process");
+        ConsoleOutputUtils.println("Windows process");
     }
 }

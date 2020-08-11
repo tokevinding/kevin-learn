@@ -10,6 +10,6 @@ import com.kevin.tools.utils.ConsoleOutputUtils;
 public class LinuxWriteProgram implements KWriteProgram {
     @Override
     public void write() {
-        ConsoleOutputUtils.print("Linux write");
+        ConsoleOutputUtils.println("Linux write");
     }
 }

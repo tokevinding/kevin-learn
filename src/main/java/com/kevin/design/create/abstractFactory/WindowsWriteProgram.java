@@ -10,6 +10,6 @@ import com.kevin.tools.utils.ConsoleOutputUtils;
 public class WindowsWriteProgram implements KWriteProgram {
     @Override
     public void write() {
-        ConsoleOutputUtils.print("Windows write");
+        ConsoleOutputUtils.println("Windows write");
     }
 }

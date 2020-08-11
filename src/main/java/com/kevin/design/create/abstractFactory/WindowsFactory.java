@@ -10,6 +10,6 @@ import com.kevin.tools.utils.ConsoleOutputUtils;
 public class WindowsFactory implements KProcessProgram {
     @Override
     public void process() {
-        ConsoleOutputUtils.print("Linux process");
+        ConsoleOutputUtils.println("Linux process");
     }
 }

@@ -10,7 +10,10 @@ import lombok.extern.slf4j.Slf4j;
  **/
 @Slf4j
 public class ConsoleOutputUtils {
-    public static void print(String content) {
+    public static void println(String content) {
         System.out.println(content);
+    }
+    public static void hr() {
+        System.out.println("================================================================================================================================================");
     }
 }
