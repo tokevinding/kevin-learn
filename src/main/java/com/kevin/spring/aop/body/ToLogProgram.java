@@ -21,6 +21,6 @@ public class ToLogProgram {
 
     public void toLogErrorMethod() {
         System.out.println("++++++方法体++++++");
-        throw new RuntimeException("方法执行异常！！");
+//        throw new RuntimeException("方法执行异常！！");
     }
 }

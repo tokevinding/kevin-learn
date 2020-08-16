@@ -2,6 +2,8 @@ package com.kevin.tools.utils;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Objects;
+
 /**
  * @ClassName: ConsoleOutput
  * @Author: kevin
@@ -14,6 +16,12 @@ public class ConsoleOutputUtils {
         System.out.println(content);
     }
     public static void hr() {
-        System.out.println("================================================================================================================================================");
+        hr("");
+    }
+    public static void hr(String title, String ... params) {
+        hr(String.format(title, params));
+    }
+    public static void hr(String title) {
+        System.out.println("======================================================================"+ (Objects.isNull(title) ? "" : title) +"==========================================================================");
     }
 }
