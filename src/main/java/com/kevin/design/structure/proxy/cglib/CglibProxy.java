@@ -1,17 +1,11 @@
 package com.kevin.design.structure.proxy.cglib;
 
 import com.kevin.tools.utils.ConsoleOutputUtils;
-import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;
 
-/**
- * @author kevin
- * @date 2020-08-11 17:35:21
- * @desc
- */
 public class CglibProxy implements MethodInterceptor {
 
     @Override

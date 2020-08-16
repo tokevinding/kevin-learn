@@ -1,9 +1,5 @@
 package com.kevin.design.create.abstractFactory;
 
-import com.kevin.design.create.factory.KLog4jLogger;
-import com.kevin.design.create.factory.KLoggerEnum;
-import com.kevin.design.create.factory.KSlf4jLogger;
-
 public class ProgramFactory {
 
     public AbstractProgramFactory getProgramFactory(KSystemEnum systemEnum) {

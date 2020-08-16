@@ -5,6 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>kevin-learn-design</artifactId>
+    <packaging>pom</packaging>
     <version>1.0.0</version>
 
     <parent>
@@ -80,6 +81,12 @@
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
             <version>3.1</version>
+        </dependency>
+
+        <!-- spring-boot-web 依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
     </dependencies>
