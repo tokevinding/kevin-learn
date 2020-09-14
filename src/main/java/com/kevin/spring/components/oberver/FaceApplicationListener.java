@@ -1,6 +1,7 @@
-package com.kevin.spring.components;
+package com.kevin.spring.components.oberver;
 
 import com.kevin.tools.utils.ConsoleOutputUtils;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -15,11 +16,11 @@ import org.springframework.stereotype.Component;
  * 3. 其实这就是标准的Oberver设计模式。另外，ApplicationEvent的发布由ApplicationContext通过#publishEvent方法完成。
  */
 @Component
-public class FaceApplicationListener implements ApplicationListener {
+public class FaceApplicationListener implements ApplicationListener<FaceApplicationEvent> {
 
     @Override
-    public void onApplicationEvent(ApplicationEvent event) {
-        ConsoleOutputUtils.hr("Kevin 监听事件：" + event.getSource());
+    public void onApplicationEvent(FaceApplicationEvent event) {
+        ConsoleOutputUtils.hr("监听到 Kevin 发布的事件：" + event.getSource());
     }
 
 }

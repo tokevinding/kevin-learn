@@ -1,5 +1,6 @@
 package com.kevin.spring.components.helpBean;
 
+import com.kevin.spring.components.FaceFactoryBean;
 import com.kevin.spring.components.importBean.FaceImportBeanDefinitionRegistrar;
 import com.kevin.spring.components.importBean.FaceImportSelector;
 import com.kevin.spring.components.postProcessor.FaceBeanDefinitionRegistryPostProcessor;
@@ -19,7 +20,16 @@ public class KevinCaller implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 
     @PostConstruct
-    public void init() {
+    public void init() throws Exception {
+        ConsoleOutputUtils.hrl();
+        ConsoleOutputUtils.hr("@PostConstruct init");
+        KevinFactoryBeanClass kevinFactoryBeanClass = (KevinFactoryBeanClass)applicationContext.getBean("faceFactoryBean");
+        ConsoleOutputUtils.hr("@PostConstruct init - bean self- " + kevinFactoryBeanClass.toString());
+        FaceFactoryBean faceFactoryBean = (FaceFactoryBean)applicationContext.getBean("&faceFactoryBean");
+        ConsoleOutputUtils.hr("@PostConstruct init - factory bean self - " + faceFactoryBean.getObject());
+
+        ConsoleOutputUtils.hrl();
+
         Object bean = applicationContext.getBean(FaceBeanDefinitionRegistryPostProcessor.KEVIN_BEAN_NAME);
         ConsoleOutputUtils.hr("Bean工厂后置处理 创建的Bean： %s", bean.toString());
         KevinAtImportClass atImportClass = applicationContext.getBean(KevinAtImportClass.class);
@@ -28,6 +38,7 @@ public class KevinCaller implements ApplicationContextAware {
         ConsoleOutputUtils.hr("ImportSelector 创建的Bean： %s", importSelector.toString());
         bean = applicationContext.getBean(FaceImportBeanDefinitionRegistrar.KEVIN_IMPORT_BEAN_NAME);
         ConsoleOutputUtils.hr("ImportBeanDefinitionRegistrar 创建的Bean： %s", bean.toString());
+        ConsoleOutputUtils.hrl();
     }
 
     @Override

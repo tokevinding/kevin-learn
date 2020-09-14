@@ -22,13 +22,13 @@ public class FaceBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-//        ConsoleOutputUtils.hr("Bean后置处理 初始化前 %s -  BeanPostProcessor.postProcessBeforeInitialization", beanName);
+        ConsoleOutputUtils.hr("Bean后置处理 初始化前 %s -  BeanPostProcessor.postProcessBeforeInitialization", beanName);
         return bean;
     }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-//        ConsoleOutputUtils.hr("Bean后置处理 初始化后 %s -  BeanPostProcessor.postProcessAfterInitialization", beanName);
+        ConsoleOutputUtils.hr("Bean后置处理 初始化后 %s -  BeanPostProcessor.postProcessAfterInitialization", beanName);
         return bean;
     }
 }

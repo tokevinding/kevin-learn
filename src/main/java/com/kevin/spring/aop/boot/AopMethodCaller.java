@@ -7,7 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 /**
- * @author dinghaifeng
+ * @author Kevin
  * @date 2020-08-12 11:14:57
  * @desc
  */
@@ -20,7 +20,7 @@ public class AopMethodCaller {
     public void initAfterDo() {
         toLogProgram.toLogMethod();
         toLogProgram.toLogReturnMethod();
-        toLogProgram.toLogErrorMethod();
+//        toLogProgram.toLogErrorMethod();
     }
 
 }

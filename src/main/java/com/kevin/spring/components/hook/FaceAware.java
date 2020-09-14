@@ -1,5 +1,6 @@
 package com.kevin.spring.components.hook;
 
+import com.kevin.spring.components.oberver.FaceApplicationEvent;
 import com.kevin.tools.utils.ConsoleOutputUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
@@ -46,6 +47,8 @@ public class FaceAware implements BeanFactoryAware
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         ConsoleOutputUtils.hr("钩子 - ApplicationContextAware.setApplicationContext");
         this.applicationContext = applicationContext;
+        ConsoleOutputUtils.hr("ApplicationContextAware.setApplicationContext 之后 发布Kevin自定义事件！！");
+        applicationContext.publishEvent(new FaceApplicationEvent(applicationContext));
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.kevin.spring.aop.body;
 import org.springframework.stereotype.Component;
 
 /**
- * @author dinghaifeng
+ * @author Kevin
  * @date 2020-08-12 11:18:09
  * @desc
  */
@@ -21,6 +21,6 @@ public class ToLogProgram {
 
     public void toLogErrorMethod() {
         System.out.println("++++++方法体++++++");
-//        throw new RuntimeException("方法执行异常！！");
+        throw new RuntimeException("方法执行异常！！");
     }
 }

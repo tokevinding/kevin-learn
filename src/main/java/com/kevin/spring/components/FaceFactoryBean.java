@@ -51,11 +51,7 @@ public class FaceFactoryBean implements FactoryBean, ApplicationContextAware {
 
     @PostConstruct
     public void init() throws Exception {
-        ConsoleOutputUtils.hr("@PostConstruct init");
-        KevinFactoryBeanClass bean = (KevinFactoryBeanClass)applicationContext.getBean("faceFactoryBean");
-        ConsoleOutputUtils.hr("@PostConstruct init - bean self- " + bean.toString());
-        FaceFactoryBean faceFactoryBean = (FaceFactoryBean)applicationContext.getBean("&faceFactoryBean");
-        ConsoleOutputUtils.hr("@PostConstruct init - factory bean self - " + faceFactoryBean.getObject());
+
     }
 
     @Override

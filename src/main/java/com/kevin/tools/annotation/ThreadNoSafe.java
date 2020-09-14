@@ -7,7 +7,7 @@ import java.lang.annotation.*;
  * @date 2020-08-10 08:21:51
  * @desc 用于标注线程不安全
  */
-@Target(ElementType.TYPE)
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ThreadNoSafe {

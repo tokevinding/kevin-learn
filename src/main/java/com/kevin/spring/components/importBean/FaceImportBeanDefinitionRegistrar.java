@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
  * ImportBeanDefinitionRegistrar注解可以比较灵活的实现Bean定义信息的注册，实际上我们在使用的时候都是通过实现该接口来达到按照指定条件注册bean定义信息
  * ，来达到注入对应的Bean到IOC容器的目的，可以灵活的按照自己的逻辑注册，且可以通过注解来开启对应的功能。
  */
-@Component
 public class FaceImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar, ApplicationContextAware {
     public static final String KEVIN_IMPORT_BEAN_NAME = "kevinImportBean";
     /**

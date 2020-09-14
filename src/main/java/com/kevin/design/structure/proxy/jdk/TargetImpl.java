@@ -10,7 +10,8 @@ import com.kevin.tools.utils.ConsoleOutputUtils;
 public class TargetImpl implements Target {
 
     @Override
-    public void targetMethod() {
+    public String targetMethod() {
         ConsoleOutputUtils.println("I am target method!!");
+        return "success";
     }
 }
