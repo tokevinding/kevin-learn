@@ -2,6 +2,7 @@ package com.kevin.threads.juc.cas.add;
 
 import com.kevin.threads.juc.cas.DoTask;
 import com.kevin.threads.juc.cas.UseUnsafe;
+import com.kevin.tools.annotation.ThreadNoSafe;
 import lombok.AllArgsConstructor;
 
 /**
@@ -9,6 +10,7 @@ import lombok.AllArgsConstructor;
  * @date 2020-09-13 23:27:04
  * @desc
  */
+@ThreadNoSafe
 @AllArgsConstructor
 public class AddUnSafeDoTask implements DoTask {
     private UseUnsafe faceUnsafe;

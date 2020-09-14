@@ -35,13 +35,12 @@ public class UseUnsafe {
             unsafe=(Unsafe)field.get(null);
 
             //获取本对象的线程安全字段（作偏移量）
-            valueOffset = unsafe.objectFieldOffset
-                    (UseUnsafe.class.getDeclaredField("unsafeValue"));
+            valueOffset = unsafe.objectFieldOffset(UseUnsafe.class.getDeclaredField("unsafeValue"));
         } catch (Exception ex) { throw new Error(ex); }
     }
 
     public final boolean tryIncrement() {
-        return compareAndSet(unsafeValue, unsafeValue + 1);
+        return compareAndSet(unsafe.getIntVolatile(this, valueOffset), unsafe.getIntVolatile(this, valueOffset) + 1);
     }
 
     public final void add(int addValue) {
