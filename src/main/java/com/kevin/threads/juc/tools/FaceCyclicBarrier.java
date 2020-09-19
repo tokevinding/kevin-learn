@@ -9,6 +9,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author dinghaifeng
  * @date 2020-09-17 19:06:46
  * @desc
+ * 需要注意的是，线程池 核心线程数需要 大于等于 总任务数
  */
 public class FaceCyclicBarrier {
 
