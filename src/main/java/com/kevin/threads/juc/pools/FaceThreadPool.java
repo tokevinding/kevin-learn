@@ -11,11 +11,11 @@ public class FaceThreadPool {
     /**
      * 核心线程数
      */
-    private static int corePoolSize = 1;
+    private static int corePoolSize = 3;
     /**
      * 最大线程数
      */
-    private static int maximumPoolSize = 2;
+    private static int maximumPoolSize = 3;
     /**
      * 超出核心线程数的空闲线程，存活时间规格
      */
