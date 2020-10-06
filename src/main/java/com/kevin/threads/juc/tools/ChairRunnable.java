@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.concurrent.CyclicBarrier;
 
 /**
- * @author dinghaifeng
+ * @author Kevin
  * @date 2020-09-17 19:07:31
  * @desc
  */

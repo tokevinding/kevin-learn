@@ -1,7 +1,7 @@
 package com.kevin.algorithm.sort;
 
 /**
- * @author dinghaifeng
+ * @author Kevin
  * @description 快速排序
  * 思想：挖坑，填坑（通常内循环，左挖坑，先从右向左查（大/小于flag），后从左向右查（小/大于flag））
  * 重要的是边界值要控制好

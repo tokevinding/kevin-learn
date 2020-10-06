@@ -3,7 +3,7 @@ package com.kevin.algorithm.sort;
 import java.util.*;
 
 /**
- * @author dinghaifeng
+ * @author Kevin
  * @description 基数排序
  * 目前做的全是正数，如果出现负数，先把所有的负数分为一组（正负数分离），
  * 将负号全部去掉，然后排列，排完之后反序一次，负数的大小刚好相反。

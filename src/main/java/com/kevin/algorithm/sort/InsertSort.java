@@ -1,7 +1,7 @@
 package com.kevin.algorithm.sort;
 
 /**
- * @author dinghaifeng
+ * @author Kevin
  * @description 插入排序
  *
  */
