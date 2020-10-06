@@ -1,6 +1,8 @@
 package com.kevin.spring.components;
 
+import com.kevin.common.utils.json.JsonUtil;
 import com.kevin.spring.components.helpBean.KevinFactoryBeanClass;
+import com.kevin.spring.components.helpBean.KevinPostClass;
 import com.kevin.tools.utils.ConsoleOutputUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
@@ -51,7 +53,8 @@ public class FaceFactoryBean implements FactoryBean, ApplicationContextAware {
 
     @PostConstruct
     public void init() throws Exception {
-
+        KevinPostClass bean = applicationContext.getBean(KevinPostClass.class);
+        ConsoleOutputUtils.hr("KevinPostClass: "+ JsonUtil.toString(bean));
     }
 
     @Override

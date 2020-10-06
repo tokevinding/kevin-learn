@@ -28,7 +28,7 @@ public class FaceThreadPool {
     /**
      * 需要执行的 超出 核心线程数 的任务 需要加入的阻塞队列
      */
-    private static BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<Runnable>(1);
+    private static BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<Runnable>(1000);
     /**
      * 线程工厂
      */

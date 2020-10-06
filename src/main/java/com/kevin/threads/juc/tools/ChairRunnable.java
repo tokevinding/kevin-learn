@@ -20,7 +20,7 @@ public class ChairRunnable implements Runnable {
     @Override
     public void run() {
         try {
-            Thread.sleep(10000);
+            Thread.sleep(1000);
             System.out.println("开始做【" + event + "】。");
 
             // 等待其他线程完成

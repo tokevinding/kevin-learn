@@ -11,14 +11,59 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Simple {
     public static void main(String[] args) {
-        printStatusValues();
+//        printStatusValues();
 //        Integer i = new Integer(-1 << 29);
 //
 //        System.out.println(Integer.toBinaryString(i));
-        for (int i = 0; i < 16; i++) {
-            System.out.println(Integer.toBinaryString(-i));
+//        for (int i = 0; i < 16; i++) {
+//            System.out.println(Integer.toBinaryString(-i));
+//        }
+//        System.out.println(Integer.toBinaryString(((1 << 29) - 1)));
+//        System.out.println(Integer.toBinaryString(~((1 << 29) - 1)));
+//        System.out.println(tableSizeFor((1<<20) + 1));
+//        System.out.println(Integer.toBinaryString((int) ((1L << 32) - 1)));
+//        int bt32 = (int) ((1L << 31));
+//        int max = 1 << 25;
+//        for (int i = 1<< 20; i < max; i+=111) {
+//            if (tableSizeFor(i) != ((i | bt32) + 1)) {
+//                System.out.println(i + " | " + Integer.toBinaryString(tableSizeFor(i)) + " | " + Integer.toBinaryString((i | bt32) + 1));
+//            }
+//        }
+
+        for (int i = 1 ; i < 30; i++) {
+            int testN = i <= 2 ? (1 << i) : (1 << i) - 2;
+            if (tableSizeFor(testN) != (1 << i)) {
+                System.out.println(i+" | " + Integer.toBinaryString(testN) + " | " + Integer.toBinaryString(tableSizeFor(testN)) + " | " + Integer.toBinaryString((1 << i)));
+            }
         }
 
+
+
+/*
+        LocalTime localTime = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        System.out.println(localTime);
+        System.out.println(formatter.format(localTime));*/
+    }
+
+    /**
+     * 目的：求当前数量对应的 2 ^ n (向上)
+     */
+    static final int tableSizeFor(int cap) {
+//        System.out.println(Integer.toBinaryString(cap));
+        int n = cap - 1;
+//        System.out.println(Integer.toBinaryString(n));
+        n |= n >>> 1;
+//        System.out.println(Integer.toBinaryString(n));
+        n |= n >>> 2;
+//        System.out.println(Integer.toBinaryString(n));
+        n |= n >>> 4;
+//        System.out.println(Integer.toBinaryString(n));
+        n |= n >>> 8;
+//        System.out.println(Integer.toBinaryString(n));
+        n |= n >>> 16;
+//        System.out.println(Integer.toBinaryString(n));
+        return (n < 0) ? 1 : (n >= (1 << 30)) ? (1 << 30) : n + 1;
     }
 
     void testBitCode() {

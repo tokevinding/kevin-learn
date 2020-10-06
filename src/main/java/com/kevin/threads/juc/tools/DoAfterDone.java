@@ -14,30 +14,33 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DoAfterDone {
 
     public static void main(String[] args) {
-        // 申明，等待线程数量 3次
-        AtomicInteger doneCount = new AtomicInteger(0);
-        int totalCount = 3;
         ThreadPoolExecutor executorService = FaceThreadPool.getExecutorService();
-        executorService.execute(() -> run(doneCount, "椅子腿", totalCount));
-        executorService.execute(() -> run(doneCount, "椅子面", totalCount));
-        executorService.execute(() -> run(doneCount, "椅子背", totalCount));
-        System.out.println("主线程结束");
+        AtomicInteger totalDone = new AtomicInteger(0);
+        for (int i = 0; i < 30; i++) {
+            // 申明，等待线程数量 3次
+            AtomicInteger doneCount = new AtomicInteger(0);
+            int totalCount = 3;
+            executorService.execute(() -> run(doneCount, "椅子腿", totalCount, totalDone));
+            executorService.execute(() -> run(doneCount, "椅子面", totalCount, totalDone));
+            executorService.execute(() -> run(doneCount, "椅子背", totalCount, totalDone));
+        }
         executorService.shutdown();
+        System.out.println("主线程结束");
     }
 
-    public static void run(AtomicInteger doneCount, String event, int totalCount) {
+    public static void run(AtomicInteger doneCount, String event, int totalCount, AtomicInteger totalDone) {
         try {
-            Thread.sleep(100);
-            System.out.println("开始做【" + event + "】。");
-            Thread.sleep(2000);
-            System.out.println("【" + event + "】做好了， 我们来一起组装吧！");
-            doneCount.getAndIncrement();
+//            Thread.sleep(100);
+//            System.out.println("开始做【" + event + "】。");
+            Thread.sleep(20);
+//            System.out.println("【" + event + "】做好了， 我们来一起组装吧！");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            doneCount.getAndIncrement();
             if (doneCount.compareAndSet(totalCount, 1 + totalCount)) {
                 //释放锁逻辑
-                System.out.println("释放锁逻辑");
+                System.out.println("释放锁逻辑"+ totalDone.incrementAndGet());
             }
         }
     }
