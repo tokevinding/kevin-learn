@@ -1,6 +1,7 @@
 package com.kevin.threads.juc.pools.rw;
 
 import com.kevin.threads.juc.aqs.rw.RwAbstractQueuedSynchronizer;
+import lombok.Getter;
 
 import java.security.AccessControlContext;
 import java.security.AccessController;
@@ -34,6 +35,8 @@ public class RwThreadPoolExecutor extends AbstractExecutorService {
      * 最大容量: 000 11111111111111111111111111111
      */
     protected static final int CAPACITY = (1 << COUNT_BITS) - 1;
+
+    /* ***************************状态常量（只有状态位）*****************************/
     /**
      * 运行中状态
      * 111 00000000000000000000000000000
@@ -42,7 +45,6 @@ public class RwThreadPoolExecutor extends AbstractExecutorService {
 
     // runState is stored in the high-order bits
 
-    //如下状态常量（只有状态位）
     /**
      * 000 00000000000000000000000000000
      */
@@ -59,6 +61,7 @@ public class RwThreadPoolExecutor extends AbstractExecutorService {
      * 011 00000000000000000000000000000
      */
     protected static final int TERMINATED = 3 << COUNT_BITS;
+
     /**
      * 默认的拒绝执行处理程序，默认抛异常
      */
@@ -93,6 +96,7 @@ public class RwThreadPoolExecutor extends AbstractExecutorService {
     /**
      * 包含池中所有工作线程的集合。仅在持有主锁时可访问。
      */
+    @Getter
     private final HashSet<RwThreadPoolExecutor.Worker> workers = new HashSet<>();
     /**
      * 等待条件，以支持等待终止
@@ -162,8 +166,7 @@ public class RwThreadPoolExecutor extends AbstractExecutorService {
                                 long keepAliveTime,
                                 TimeUnit unit,
                                 BlockingQueue<Runnable> workQueue) {
-        this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
-                Executors.defaultThreadFactory(), defaultHandler);
+        this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, Executors.defaultThreadFactory(), defaultHandler);
     }
 
     /**
@@ -375,7 +378,7 @@ public class RwThreadPoolExecutor extends AbstractExecutorService {
             if (isRunning(c)) {
                 return;
             }
-            //2.STOP之后的状态
+            //2.STOP及之后的状态
             if (runStateAtLeast(c, TIDYING)) {
                 return;
             }
@@ -562,7 +565,7 @@ public class RwThreadPoolExecutor extends AbstractExecutorService {
             // 只在必要时检查队列是否为空。
 //          原：  if (rs >= SHUTDOWN && !(rs == SHUTDOWN && firstTask == null && !workQueue.isEmpty())) {
 
-            /*不需要添加线程的几种情况：*/
+            /*不允许加任务/线程的几种情况：*/
             //1.STOP, TIDYING, TERMINATED状态
             if (rs > SHUTDOWN) {
                 return false;
@@ -573,7 +576,7 @@ public class RwThreadPoolExecutor extends AbstractExecutorService {
                 return false;
             }
 
-            //3.SHUTDOWN状态 && 传入任务为空 && 队列为空
+            //3.SHUTDOWN状态 && 传入任务为空 && 队列为空（此时已经不需要添加线程了）
             if (rs == SHUTDOWN && workQueue.isEmpty()) {
                 return false;
             }
@@ -697,7 +700,7 @@ public class RwThreadPoolExecutor extends AbstractExecutorService {
      * @param completedAbruptly 如果worker死于用户异常
      */
     private void processWorkerExit(RwThreadPoolExecutor.Worker w, boolean completedAbruptly) {
-        //如果突然结束，则workerCount没有被调整
+        //如果突然结束（用户业务异常导致中断），则workerCount没有被调整
         if (completedAbruptly) {
             //活动线程数自减
             decrementWorkerCount();
@@ -729,7 +732,9 @@ public class RwThreadPoolExecutor extends AbstractExecutorService {
                 }
                 //确保至少有一个活动线程
                 if (workerCountOf(c) >= min) {
-                    // 有的话不需要增加
+//                    正常的情况 - 不需要增加：
+//                    1.允许核心线程过期 并且 队列非空 并且 活动线程 >= 1
+//                    2.不允许核心线程过期 并且 活动线程 >= 核心线程数
                     return;
                 }
             }
@@ -1613,7 +1618,7 @@ public class RwThreadPoolExecutor extends AbstractExecutorService {
          * @param firstTask 第一个任务(如果没有，则为空)
          */
         Worker(Runnable firstTask) {
-            //在运行工人之前禁止中断
+            //在运行worker之前禁止中断
             setState(-1);
             this.firstTask = firstTask;
             this.thread = getThreadFactory().newThread(this);
