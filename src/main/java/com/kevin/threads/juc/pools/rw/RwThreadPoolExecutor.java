@@ -62,6 +62,10 @@ public class RwThreadPoolExecutor extends AbstractExecutorService {
      */
     protected static final int TERMINATED = 3 << COUNT_BITS;
 
+    public AtomicInteger getCtl() {
+        return ctl;
+    }
+
     /**
      * 默认的拒绝执行处理程序，默认抛异常
      */
@@ -765,6 +769,9 @@ public class RwThreadPoolExecutor extends AbstractExecutorService {
             int rs = runStateOf(c);
 
             // 只在必要时检查队列是否为空。
+            //两种情况：
+            //1.SHUTDOWN状态队列为空
+            //2.STOP状态
             if (rs >= SHUTDOWN && (rs >= STOP || workQueue.isEmpty())) {
                 decrementWorkerCount();
                 return null;
@@ -873,6 +880,7 @@ public class RwThreadPoolExecutor extends AbstractExecutorService {
         } finally {
             //Worker退出逻辑
             processWorkerExit(w, completedAbruptly);
+            System.out.println("线程" + Thread.currentThread().getName()+ "挂掉");
         }
     }
 

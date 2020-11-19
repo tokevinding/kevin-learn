@@ -850,7 +850,7 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
             selfInterrupt();
             System.out.println("selfInterrupt done");
         }
-        System.out.println("acquire done");
+//        System.out.println("acquire done");
     }
 
     /**
