@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2020-10-12 10:21:58
  * @desc
  *  1.了解为什么使用Class.forName("com.mysql.jdbc.Driver");加载驱动

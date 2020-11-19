@@ -1,7 +1,7 @@
 package com.kevin.threads.juc.aqs.rw;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2020-10-23 14:28:53
  * @desc
  */

@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2020-11-18 17:24:31
  * @desc 分析核心线程数
  */

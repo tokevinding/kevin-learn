@@ -3,7 +3,7 @@ package com.kevin.threads.base.a1b2c3;
 import java.util.concurrent.locks.LockSupport;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2020-10-19 10:05:07
  * @desc
  */

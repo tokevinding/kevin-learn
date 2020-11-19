@@ -3,7 +3,7 @@ package com.kevin.threads.juc.pools.analyse;
 import com.kevin.tools.utils.ConsoleOutputUtils;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2020-10-23 12:55:29
  * @desc
  */

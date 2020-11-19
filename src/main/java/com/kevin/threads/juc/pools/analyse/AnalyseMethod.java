@@ -1,7 +1,7 @@
 package com.kevin.threads.juc.pools.analyse;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2020-10-16 17:32:45
  * @desc
  */

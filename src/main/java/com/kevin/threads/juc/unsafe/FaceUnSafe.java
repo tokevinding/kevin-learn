@@ -1,7 +1,7 @@
 package com.kevin.threads.juc.unsafe;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2020-10-24 13:44:58
  * 分析：
  * 1.Unsafe可认为是Java中留下的后门，提供了一些低层次操作，如直接内存访问、线程调度等

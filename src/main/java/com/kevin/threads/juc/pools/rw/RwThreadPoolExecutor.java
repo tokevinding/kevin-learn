@@ -24,7 +24,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2020-10-22 17:01:55
  * @desc
  */

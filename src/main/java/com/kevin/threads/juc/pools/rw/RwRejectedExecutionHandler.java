@@ -3,7 +3,7 @@ package com.kevin.threads.juc.pools.rw;
 import java.util.concurrent.RejectedExecutionException;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2020-10-22 17:06:44
  * @desc
  */
