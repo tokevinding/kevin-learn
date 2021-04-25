@@ -273,7 +273,10 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
                 return node;
             }
         }
-        //tail=null，将node添加到同步队列中
+        // 代码会执行到这里, 只有两种情况:
+        //    1. 队列为空
+        //    2. CAS失败
+        // 如果当前node插入队尾失败，则通过自旋保证替换成功(自旋+CAS)
         enq(node);
         return node;
     }
@@ -305,7 +308,7 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
 
         /*
          * 要unpark的线程被保存在后继节点中，后继节点通常就是下一个节点。
-         * 但如果取消或明显为空，从尾部向后遍历以找到实际的未取消的后继。
+         * 但如果取消或明显为空，从尾部向前遍历以找到实际的未取消的后继。
          */
         RwAbstractQueuedSynchronizer.Node s = node.next;
         if (s == null || s.waitStatus > 0) {
@@ -317,6 +320,7 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
             }
         }
         if (s != null) {
+            //unpark node后面的一个未取消的节点（离node最近的）
             LockSupport.unpark(s.thread);
         }
     }
@@ -357,9 +361,8 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
     }
 
     /**
-     * Sets head of queue, and checks if successor may be waiting
-     * in shared mode, if so propagating if either propagate > 0 or
-     * PROPAGATE status was set.
+     * 如果设置了 propagate > 0 或 PROPAGATE 状态。
+     * 设置队列头，并检查后继是否可能在共享模式中等待设置队列头，并检查后继是否可能在共享模式中等待
      *
      * @param node the node
      * @param propagate the return value from a tryAcquireShared
@@ -368,20 +371,14 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
         RwAbstractQueuedSynchronizer.Node h = head; // Record old head for check below
         setHead(node);
         /*
-         * Try to signal next queued node if:
-         *   Propagation was indicated by caller,
-         *     or was recorded (as h.waitStatus either before
-         *     or after setHead) by a previous operation
-         *     (note: this uses sign-check of waitStatus because
-         *      PROPAGATE status may transition to SIGNAL.)
-         * and
-         *   The next node is waiting in shared mode,
-         *     or we don't know, because it appears null
+         * 尝试向下一个排队节点发出信号 如果:
+         *   传播是由呼叫者指示的,
+         *     或被前一个操作记录(作为h.waitStatus在setHead之前或之后)
+         *     (注意:这使用了waitStatus的sign-check，因为PROPAGATE状态可能会转换为SIGNAL。)
+         * 并且
+         *   下一个节点正在共享模式中等待，或者下一个节点是null
          *
-         * The conservatism in both of these checks may cause
-         * unnecessary wake-ups, but only when there are multiple
-         * racing acquires/releases, so most need signals now or soon
-         * anyway.
+         * 这两种检查的保守性可能会导致不必要的唤醒，但只有在有多线程竞争 获取/释放 时，所以大多数现在或很快就需要信号。
          */
         if (propagate > 0 || h == null || h.waitStatus < 0 ||
                 (h = head) == null || h.waitStatus < 0) {
@@ -394,7 +391,7 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
     // Utilities for various versions of acquire
 
     /**
-     * Cancels an ongoing attempt to acquire.
+     * 取消正在进行的尝试获取
      *
      * @param node the node
      */
@@ -405,36 +402,38 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
 
         node.thread = null;
 
-        // Skip cancelled predecessors
+        // 跳过已取消的前任
         RwAbstractQueuedSynchronizer.Node pred = node.prev;
         while (pred.waitStatus > 0)
             node.prev = pred = pred.prev;
 
-        // predNext is the apparent node to unsplice. CASes below will
-        // fail if not, in which case, we lost race vs another cancel
-        // or signal, so no further action is necessary.
+        // predNext显然是要解拼接的节点。
+        // 如果不这样，下面的情况将失败，在这种情况下，我们输掉了与另一个取消或信号的比赛，所以不需要进一步的操作。
         RwAbstractQueuedSynchronizer.Node predNext = pred.next;
 
-        // Can use unconditional write instead of CAS here.
-        // After this atomic step, other Nodes can skip past us.
-        // Before, we are free of interference from other threads.
+        // 在这里，可以使用无条件写入代替CAS。
+        // 在这个原子步骤之后，其他节点可以跳过我们。以前，我们不受其他线程的干扰。
         node.waitStatus = RwAbstractQueuedSynchronizer.Node.CANCELLED;
 
         // If we are the tail, remove ourselves.
         if (node == tail && compareAndSetTail(node, pred)) {
             compareAndSetNext(pred, predNext, null);
         } else {
-            // If successor needs signal, try to set pred's next-link
-            // so it will get one. Otherwise wake it up to propagate.
+            // 如果后继者需要信号，尝试设置pred的下一个链接，这样它就会得到一个。否则，唤醒它传播
             int ws;
+            //1.为true的情况：
+            //    1.1.前驱非头节点 并且 前驱的等待状态为SIGNAL 并且 前驱的线程非空
+            //    1.2.前驱非头节点 并且 前驱的等待状态 <= 0 并且 设置前驱的等待状态(为SIGNAL)成功  并且 前驱的线程非空
             if (pred != head &&
                     ((ws = pred.waitStatus) == RwAbstractQueuedSynchronizer.Node.SIGNAL ||
                             (ws <= 0 && compareAndSetWaitStatus(pred, ws, RwAbstractQueuedSynchronizer.Node.SIGNAL))) &&
                     pred.thread != null) {
+                //当前节点有next，则设置前驱的next = 当前节点的next
                 RwAbstractQueuedSynchronizer.Node next = node.next;
                 if (next != null && next.waitStatus <= 0)
                     compareAndSetNext(pred, predNext, next);
             } else {
+                //唤醒节点的后继(如果存在)
                 unparkSuccessor(node);
             }
 
@@ -447,7 +446,7 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
      *
      * @param pred node's predecessor holding status
      * @param node the node
-     * @return {@code true} if thread should block
+     * @return {@code true} 如果线程阻塞返回true
      */
     private static boolean shouldParkAfterFailedAcquire(RwAbstractQueuedSynchronizer.Node pred, RwAbstractQueuedSynchronizer.Node node) {
         int ws = pred.waitStatus;
@@ -465,7 +464,7 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
             pred.next = node;
         } else {
             /*
-             * waitStatus <= 0(CANCELLED 或 为0)，设置head 的 waitStatus = -1（SIGNAL，后续需要unpark）
+             * waitStatus <= 0(非CANCELLED)，设置head 的 waitStatus = -1（SIGNAL，后续需要unpark）
              * 等待状态必须为0或传播。指示我们需要信号，但先别停车。来电者需重试以确保停车前无法取得。
              */
             compareAndSetWaitStatus(pred, ws, RwAbstractQueuedSynchronizer.Node.SIGNAL);
@@ -481,7 +480,7 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
     }
 
     /**
-     * 方便方法park后检查是否中断
+     * 方法park后检查是否中断
      *
      * @return {@code true} if interrupted
      */
@@ -709,15 +708,12 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
     // Main exported methods
 
     /**
-     * Attempts to acquire in exclusive mode. This method should query
-     * if the state of the object permits it to be acquired in the
-     * exclusive mode, and if so to acquire it.
+     * 试图以独占模式获取。该方法应该查询对象的状态是否允许以独占模式获取它，如果允许，则获取它。
      *
-     * <p>This method is always invoked by the thread performing
-     * acquire.  If this method reports failure, the acquire method
-     * may queue the thread, if it is not already queued, until it is
-     * signalled by a release from some other thread. This can be used
-     * to implement method {@link Lock#tryLock()}.
+     * <p>
+     * 这个方法总是被执行acquire的线程调用。
+     * 如果这个方法报告失败，acquire方法可能会让线程进入队列(如果它还没有进入队列)，直到它收到来自其他线程的释放信号。
+     * 这可以用来实现方法{@link Lock#tryLock()}。
      *
      * <p>The default
      * implementation throws {@link UnsupportedOperationException}.
@@ -1115,30 +1111,21 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
     }
 
     /**
-     * Queries whether any threads have been waiting to acquire longer
-     * than the current thread.
+     * 查询是否有线程等待获取的时间长于当前线程。
      *
-     * <p>An invocation of this method is equivalent to (but may be
-     * more efficient than):
-     *  <pre> {@code
-     * getFirstQueuedThread() != Thread.currentThread() &&
-     * hasQueuedThreads()}</pre>
+     * 调用此方法等价于(但可能更有效):
+     *  <pre>
+     *      {@code getFirstQueuedThread() != Thread.currentThread() && hasQueuedThreads()}
+     * </pre>
      *
-     * <p>Note that because cancellations due to interrupts and
-     * timeouts may occur at any time, a {@code true} return does not
-     * guarantee that some other thread will acquire before the current
-     * thread.  Likewise, it is possible for another thread to win a
-     * race to enqueue after this method has returned {@code false},
-     * due to the queue being empty.
+     * <p>注意，由于中断和超时导致的取消可能在任何时候发生，{@code true}返回不能保证其他线程会在当前线程之前获得。
+     * 同样，由于队列为空，在这个方法返回{@code false}后，另一个线程也可能赢得进入队列的竞赛。
      *
-     * <p>This method is designed to be used by a fair synchronizer to
-     * avoid <a href="AbstractQueuedSynchronizer#barging">barging</a>.
-     * Such a synchronizer's {@link #tryAcquire} method should return
-     * {@code false}, and its {@link #tryAcquireShared} method should
-     * return a negative value, if this method returns {@code true}
-     * (unless this is a reentrant acquire).  For example, the {@code
-     * tryAcquire} method for a fair, reentrant, exclusive mode
-     * synchronizer might look like this:
+     * <p>
+     *     此方法被设计为公平同步器使用，以避免<a href="AbstractQueuedSynchronizer#barging">barging</a>。
+     * 这样一个同步器的{@link #tryAcquire}方法应该返回{@code false}，如果这个方法返回{@code true}，
+     * 那么它的{@link # tryacquiresred}方法应该返回一个负值(除非这是一个可重入的获取)。
+     * 例如，一个公平、可重入、独占模式的同步器的{@code tryAcquire}方法可能是这样的:
      *
      *  <pre> {@code
      * protected boolean tryAcquire(int arg) {
@@ -1152,9 +1139,9 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
      *   }
      * }}</pre>
      *
-     * @return {@code true} if there is a queued thread preceding the
-     *         current thread, and {@code false} if the current thread
-     *         is at the head of the queue or the queue is empty
+     * @return 如果当前线程之前有一个正在排队的线程，则为{@code true};
+     *         如果当前线程位于队列的头部或队列为空，则为{@code false}
+     *
      * @since 1.7
      */
     public final boolean hasQueuedPredecessors() {
@@ -1164,6 +1151,9 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
         RwAbstractQueuedSynchronizer.Node t = tail; // Read fields in reverse initialization order
         RwAbstractQueuedSynchronizer.Node h = head;
         RwAbstractQueuedSynchronizer.Node s;
+        //为true的条件
+        //1.head != tail && head.next == null
+        //2.head != tail && head.next != null && head.next.thread不是当前线程
         return h != t &&
                 ((s = h.next) == null || s.thread != Thread.currentThread());
     }

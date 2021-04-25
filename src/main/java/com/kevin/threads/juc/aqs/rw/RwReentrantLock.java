@@ -161,7 +161,7 @@ public class RwReentrantLock implements Lock, java.io.Serializable {
     }
 
     /**
-     * Sync object for fair locks
+     * 公平锁同步对象
      */
     static final class FairSync extends Sync {
         private static final long serialVersionUID = -3000897897090466540L;
@@ -181,6 +181,9 @@ public class RwReentrantLock implements Lock, java.io.Serializable {
             final Thread current = Thread.currentThread();
             int c = getState();
             if (c == 0) {
+                //条件：
+                // 1.当前线程等待获取的时间最长（公平）
+                // 2.CAS设置状态成功
                 if (!hasQueuedPredecessors() &&
                         compareAndSetState(0, acquires)) {
                     setExclusiveOwnerThread(current);
@@ -188,6 +191,8 @@ public class RwReentrantLock implements Lock, java.io.Serializable {
                 }
             }
             else if (current == getExclusiveOwnerThread()) {
+                //当前线程 为 锁持有者
+                //累加 状态
                 int nextc = c + acquires;
                 if (nextc < 0) {
                     throw new Error("Maximum lock count exceeded");
