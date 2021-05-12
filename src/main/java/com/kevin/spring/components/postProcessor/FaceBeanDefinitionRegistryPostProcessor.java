@@ -1,5 +1,6 @@
 package com.kevin.spring.components.postProcessor;
 
+import com.kevin.spring.components.CountThreadLocal;
 import com.kevin.spring.components.helpBean.KevinClass;
 import com.kevin.tools.utils.ConsoleOutputUtils;
 import org.springframework.beans.BeansException;
@@ -24,7 +25,7 @@ public class FaceBeanDefinitionRegistryPostProcessor implements BeanDefinitionRe
 
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        ConsoleOutputUtils.hr("Bean定义注册后置处理 BeanDefinitionRegistryPostProcessor.postProcessBeanDefinitionRegistry");
+        ConsoleOutputUtils.hr(CountThreadLocal.incrementAndGet()+ " Bean定义注册后置处理 BeanDefinitionRegistryPostProcessor.postProcessBeanDefinitionRegistry");
         AbstractBeanDefinition beanDefinition = BeanDefinitionBuilder
                 .genericBeanDefinition(KevinClass.class).getBeanDefinition();
         registry.registerBeanDefinition(KEVIN_BEAN_NAME, beanDefinition);

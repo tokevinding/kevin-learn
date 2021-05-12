@@ -1,6 +1,8 @@
 package com.kevin.spring.components.importBean;
 
+import com.kevin.spring.components.CountThreadLocal;
 import com.kevin.spring.components.helpBean.KevinImportClass;
+import com.kevin.tools.utils.ConsoleOutputUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -28,6 +30,7 @@ public class FaceImportBeanDefinitionRegistrar implements ImportBeanDefinitionRe
      **/
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+        ConsoleOutputUtils.hrLineNumber("", "ImportBeanDefinitionRegistrar.registerBeanDefinitions");
         BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(KevinImportClass.class);
         registry.registerBeanDefinition(KEVIN_IMPORT_BEAN_NAME, builder.getBeanDefinition());
     }

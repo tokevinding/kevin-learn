@@ -237,11 +237,10 @@ public class RwReentrantLock implements Lock, java.io.Serializable {
     }
 
     /**
-     * Acquires the lock unless the current thread is
+     * 获取锁，除非当前线程是
      * {@linkplain Thread#interrupt interrupted}.
      *
-     * <p>Acquires the lock if it is not held by another thread and returns
-     * immediately, setting the lock hold count to one.
+     * <p>如果锁没有被其他线程持有，则获取该锁并立即返回，将锁持有次数设置为1。
      *
      * <p>If the current thread already holds this lock then the hold count
      * is incremented by one and the method returns immediately.

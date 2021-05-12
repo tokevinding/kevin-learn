@@ -38,7 +38,7 @@ public class FaceFactoryBean implements FactoryBean, ApplicationContextAware {
      */
     @Override
     public Class<?> getObjectType() {
-//        ConsoleOutputUtils.hr("FaceFactoryBean.getObjectType");
+        ConsoleOutputUtils.hr(CountThreadLocal.incrementAndGet() + " FaceFactoryBean.getObjectType");
         return KevinFactoryBeanClass.class;
     }
 
@@ -47,14 +47,14 @@ public class FaceFactoryBean implements FactoryBean, ApplicationContextAware {
      */
     @Override
     public boolean isSingleton() {
-        ConsoleOutputUtils.hr("FaceFactoryBean.isSingleton");
+        ConsoleOutputUtils.hr(CountThreadLocal.incrementAndGet() + " FaceFactoryBean.isSingleton");
         return false;
     }
 
     @PostConstruct
     public void init() throws Exception {
         KevinPostClass bean = applicationContext.getBean(KevinPostClass.class);
-        ConsoleOutputUtils.hr("KevinPostClass: "+ JsonUtil.toString(bean));
+        ConsoleOutputUtils.hr(CountThreadLocal.incrementAndGet() + " KevinPostClass: "+ JsonUtil.toString(bean));
     }
 
     @Override

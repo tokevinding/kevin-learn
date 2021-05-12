@@ -1,5 +1,6 @@
 package com.kevin.spring.components.postProcessor;
 
+import com.kevin.spring.components.CountThreadLocal;
 import com.kevin.tools.utils.ConsoleOutputUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.MutablePropertyValues;
@@ -19,7 +20,7 @@ public class FaceBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        ConsoleOutputUtils.hr("Bean工厂后置处理 BeanDefinitionRegistryPostProcessor - BeanFactoryPostProcessor.postProcessBeanFactory");
+        ConsoleOutputUtils.hr(CountThreadLocal.incrementAndGet()+ " Bean工厂后置处理 BeanDefinitionRegistryPostProcessor - BeanFactoryPostProcessor.postProcessBeanFactory");
         BeanDefinition beanDefinition = beanFactory.getBeanDefinition(FaceBeanDefinitionRegistryPostProcessor.KEVIN_BEAN_NAME);
         MutablePropertyValues propertyValues = beanDefinition.getPropertyValues();
         propertyValues.add("name", "name - change");

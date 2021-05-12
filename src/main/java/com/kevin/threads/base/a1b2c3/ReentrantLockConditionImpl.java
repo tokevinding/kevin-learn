@@ -1,5 +1,7 @@
 package com.kevin.threads.base.a1b2c3;
 
+import com.kevin.threads.juc.aqs.rw.RwReentrantLock;
+
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -12,7 +14,7 @@ public class ReentrantLockConditionImpl {
     public static void main(String[] args) throws Exception {
         char[] num = "1234567".toCharArray();
         char[] cs = "ABCDEFG".toCharArray();
-        ReentrantLock lock = new ReentrantLock();
+        RwReentrantLock lock = new RwReentrantLock();
         Condition condition1 = lock.newCondition();
         Condition condition2 = lock.newCondition();
         new Thread(() -> {

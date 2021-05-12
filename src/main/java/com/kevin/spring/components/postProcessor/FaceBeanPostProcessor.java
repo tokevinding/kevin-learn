@@ -1,5 +1,6 @@
 package com.kevin.spring.components.postProcessor;
 
+import com.kevin.spring.components.CountThreadLocal;
 import com.kevin.tools.utils.ConsoleOutputUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -22,13 +23,13 @@ public class FaceBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        ConsoleOutputUtils.hr("Bean后置处理 初始化前 %s -  BeanPostProcessor.postProcessBeforeInitialization", beanName);
+        ConsoleOutputUtils.hr(CountThreadLocal.incrementAndGet()+ " Bean后置处理 初始化前 %s -  BeanPostProcessor.postProcessBeforeInitialization", beanName);
         return bean;
     }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        ConsoleOutputUtils.hr("Bean后置处理 初始化后 %s -  BeanPostProcessor.postProcessAfterInitialization", beanName);
+        ConsoleOutputUtils.hr(CountThreadLocal.incrementAndGet()+ " Bean后置处理 初始化后 %s -  BeanPostProcessor.postProcessAfterInitialization", beanName);
         return bean;
     }
 }

@@ -1,5 +1,6 @@
 package com.kevin.spring.components.postProcessor;
 
+import com.kevin.spring.components.CountThreadLocal;
 import com.kevin.spring.components.helpBean.KevinClass;
 import com.kevin.spring.components.helpBean.KevinPostClass;
 import com.kevin.tools.utils.ConsoleOutputUtils;
@@ -22,7 +23,7 @@ import java.beans.PropertyDescriptor;
  * ，也可以实现BeanDefinition的注册、移除等操作。
  **/
 @Order(999)
-@Component
+//@Component
 public class FaceInstantiationAwareBeanPostProcessor implements InstantiationAwareBeanPostProcessor {
 
     @Override
@@ -32,21 +33,25 @@ public class FaceInstantiationAwareBeanPostProcessor implements InstantiationAwa
 
     @Override
     public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
+        ConsoleOutputUtils.hr(CountThreadLocal.incrementAndGet() + "FaceInstantiationAwareBeanPostProcessor.postProcessAfterInstantiation");
         return false;
     }
 
     @Override
     public PropertyValues postProcessPropertyValues(PropertyValues pvs, PropertyDescriptor[] pds, Object bean, String beanName) throws BeansException {
+        ConsoleOutputUtils.hr(CountThreadLocal.incrementAndGet() + "FaceInstantiationAwareBeanPostProcessor.postProcessPropertyValues");
         return null;
     }
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        ConsoleOutputUtils.hr(CountThreadLocal.incrementAndGet() + "FaceInstantiationAwareBeanPostProcessor.postProcessBeforeInitialization");
         return null;
     }
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        ConsoleOutputUtils.hr(CountThreadLocal.incrementAndGet() + "FaceInstantiationAwareBeanPostProcessor.postProcessAfterInitialization");
         return null;
     }
 }

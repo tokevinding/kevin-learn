@@ -7,6 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -48,6 +50,24 @@ public class ConsoleOutputUtils {
     public static void hr(String title, String ... params) {
         hr(String.format(title, params));
     }
+
+    private static Map<String, Integer> typeCountMap = new HashMap<>();
+    public static void hrLineNumber(String type) {
+        hrLineNumber("", type);
+    }
+    public static void hrLineNumber(String title, String type) {
+        Integer itemCount = typeCountMap.get(type);
+        if (Objects.nonNull(itemCount)) {
+            typeCountMap.put(type, itemCount + 1);
+            return;
+        }
+        typeCountMap.put(type, 1);
+        hrNoNumber(typeCountMap.size() + " - " + title + " - "+ type);
+    }
+    public static void hrNoNumber(String title) {
+        System.out.println("======================================================================"+ (Objects.isNull(title) ? "" : title) +"==========================================================================");
+    }
+
     public static void hr(String title) {
         if (StringUtils.isNotEmpty(title)) {
             title = order++ + title;
