@@ -57,7 +57,7 @@ public class RwReentrantLock implements Lock, java.io.Serializable {
             int c = getState();
             //state=0说明当前是无锁状态
             if (c == 0) {
-                //通过cas操作来替换state的值改为1
+                //通过cas操作来替换state的值
                 //为什么要用cas? 在多线程环境中，直接修改state=1会存在线程安全问题
                 if (compareAndSetState(0, acquires)) {
                     //保存当前获得锁的线程
