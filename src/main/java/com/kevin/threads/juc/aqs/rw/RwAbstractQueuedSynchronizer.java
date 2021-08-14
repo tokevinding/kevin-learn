@@ -942,24 +942,21 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
     }
 
     /**
-     * Acquires in shared mode, aborting if interrupted.  Implemented
-     * by first checking interrupt status, then invoking at least once
-     * {@link #tryAcquireShared}, returning on success.  Otherwise the
-     * thread is queued, possibly repeatedly blocking and unblocking,
-     * invoking {@link #tryAcquireShared} until success or the thread
-     * is interrupted.
-     * @param arg the acquire argument.
-     * This value is conveyed to {@link #tryAcquireShared} but is
-     * otherwise uninterpreted and can represent anything
-     * you like.
+     * 在共享模式下获取，如果被中断则中止。通过首先检查中断状态，然后调用至少一次{@link # tryAcquirered}，成功返回。
+     * 否则，线程将被排队，可能会重复阻塞和解除阻塞，调用{@link # tryacquirered}，直到成功或线程被中断。
+     *
+     * @param arg 获取参数. 这个值被传递给{@link # tryacquirered}，但是它没有被解释，可以表示任何你喜欢的东西。
+     *
      * @throws InterruptedException if the current thread is interrupted
      */
     public final void acquireSharedInterruptibly(int arg)
             throws InterruptedException {
-        if (Thread.interrupted())
+        if (Thread.interrupted()) {
             throw new InterruptedException();
-        if (tryAcquireShared(arg) < 0)
+        }
+        if (tryAcquireShared(arg) < 0) {
             doAcquireSharedInterruptibly(arg);
+        }
     }
 
     /**

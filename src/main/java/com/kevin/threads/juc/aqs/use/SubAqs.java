@@ -7,4 +7,8 @@ package com.kevin.threads.juc.aqs.use;
  */
 public class SubAqs {
 
+    public static void main(String[] args) {
+        System.out.println((1<<31) -1);
+        int[] ints = new int[(1<<28)];
+    }
 }
