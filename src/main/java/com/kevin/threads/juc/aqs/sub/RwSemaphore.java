@@ -1,4 +1,4 @@
-package com.kevin.threads.juc.aqs.use;
+package com.kevin.threads.juc.aqs.sub;
 
 
 import com.kevin.threads.juc.aqs.rw.RwAbstractQueuedSynchronizer;

@@ -1,11 +1,9 @@
 package com.kevin.threads.juc.aqs.analyse;
 
-import com.kevin.threads.juc.aqs.rw.RwReentrantLock;
+import com.kevin.threads.juc.aqs.sub.RwReentrantLock;
 import com.kevin.threads.juc.pools.rw.RwThreadPoolExecutor;
 
-import java.util.HashSet;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.LockSupport;
 

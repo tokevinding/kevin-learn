@@ -1,9 +1,8 @@
 package com.kevin.threads.base.a1b2c3;
 
-import com.kevin.threads.juc.aqs.rw.RwReentrantLock;
+import com.kevin.threads.juc.aqs.sub.RwReentrantLock;
 
 import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author kevin

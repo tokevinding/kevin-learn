@@ -1,4 +1,6 @@
-package com.kevin.threads.juc.aqs.rw;
+package com.kevin.threads.juc.aqs.sub;
+
+import com.kevin.threads.juc.aqs.rw.RwAbstractQueuedSynchronizer;
 
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;

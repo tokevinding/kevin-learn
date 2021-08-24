@@ -194,7 +194,7 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
      * 设置同步状态的值。该操作具有{@code volatile}写入的内存语义。
      * @param newState 新状态值
      */
-    protected final void setState(int newState) {
+    public final void setState(int newState) {
         state = newState;
     }
 
@@ -394,8 +394,9 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
         if (propagate > 0 || h == null || h.waitStatus < 0 ||
                 (h = head) == null || h.waitStatus < 0) {
             RwAbstractQueuedSynchronizer.Node s = node.next;
-            if (s == null || s.isShared())
+            if (s == null || s.isShared()) {
                 doReleaseShared();
+            }
         }
     }
 
@@ -408,15 +409,17 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
      */
     private void cancelAcquire(RwAbstractQueuedSynchronizer.Node node) {
         // Ignore if node doesn't exist
-        if (node == null)
+        if (node == null) {
             return;
+        }
 
         node.thread = null;
 
         // 跳过已取消的前任
         RwAbstractQueuedSynchronizer.Node pred = node.prev;
-        while (pred.waitStatus > 0)
+        while (pred.waitStatus > 0) {
             node.prev = pred = pred.prev;
+        }
 
         // predNext显然是要解拼接的节点。
         // 如果不这样，下面的情况将失败，在这种情况下，我们输掉了与另一个取消或信号的比赛，所以不需要进一步的操作。
@@ -434,7 +437,7 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
             int ws;
             //1.为true的情况：
             //    1.1.前驱非头节点 并且 前驱的等待状态为SIGNAL 并且 前驱的线程非空
-            //    1.2.前驱非头节点 并且 前驱的等待状态 <= 0 并且 设置前驱的等待状态(为SIGNAL)成功  并且 前驱的线程非空
+            //    1.2.前驱非头节点 并且 前驱的等待状态 <= 0 并且 != -1 并且 设置前驱的等待状态(为SIGNAL)成功  并且 前驱的线程非空
             if (pred != head &&
                     ((ws = pred.waitStatus) == RwAbstractQueuedSynchronizer.Node.SIGNAL ||
                             (ws <= 0 && compareAndSetWaitStatus(pred, ws, RwAbstractQueuedSynchronizer.Node.SIGNAL))) &&
@@ -496,7 +499,7 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
      * @return {@code true} if interrupted
      */
     private final boolean parkAndCheckInterrupt() {
-        System.out.println("parkAndCheckInterrupt - 线程"+ Thread.currentThread().getName()+"park");
+//        System.out.println("parkAndCheckInterrupt - 线程"+ Thread.currentThread().getName()+"park");
         LockSupport.park(this);
         return Thread.interrupted();
     }
@@ -523,7 +526,7 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
         try {
             boolean interrupted = false;
             for (;;) {
-                System.out.println("acquireQueued - 线程"+ Thread.currentThread().getName()+"正在获取锁");
+//                System.out.println("acquireQueued - 线程"+ Thread.currentThread().getName()+"正在获取锁");
                 final RwAbstractQueuedSynchronizer.Node p = node.predecessor();
                 // 如果前驱为head才有资格进行锁的抢夺
                 if (p == head && tryAcquire(arg)) {
@@ -542,8 +545,9 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
                 }
             }
         } finally {
-            if (failed)
+            if (failed) {
                 cancelAcquire(node);
+            }
         }
     }
 
@@ -1163,7 +1167,7 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
         RwAbstractQueuedSynchronizer.Node h = head;
         RwAbstractQueuedSynchronizer.Node s;
         //为true的条件
-        //1.head != tail && head.next == null
+        //1.head != tail && head.next == null(说明 已经有节点被设置为head，并且可能存在其他线程正在入队)
         //2.head != tail && head.next != null && head.next.thread不是当前线程
         return h != t &&
                 ((s = h.next) == null || s.thread != Thread.currentThread());
@@ -1313,7 +1317,7 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
      */
     final boolean transferForSignal(RwAbstractQueuedSynchronizer.Node node) {
         /*
-         * If cannot change waitStatus, the node has been cancelled.
+         * 如果不能更改waitStatus，则该节点已被取消。
          */
         if (!compareAndSetWaitStatus(node, RwAbstractQueuedSynchronizer.Node.CONDITION, 0))
             return false;
@@ -1566,9 +1570,7 @@ public abstract class RwAbstractQueuedSynchronizer extends RwAbstractOwnableSync
         // public methods
 
         /**
-         * Moves the longest-waiting thread, if one exists, from the
-         * wait queue for this condition to the wait queue for the
-         * owning lock.
+         * 将等待时间最长的线程(如果存在)从该条件的等待队列移动到拥有锁的等待队列。
          *
          * @throws IllegalMonitorStateException if {@link #isHeldExclusively}
          *         returns {@code false}
