@@ -1,25 +1,16 @@
 package com.kevin.java.base.compare;
 
-import lombok.Getter;
-
-import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * @author dinghaifeng
  * @date 2021-09-01 18:30:46
  * @desc
  */
-public class ComparetorObject implements Comparable<ComparetorObject>, Serializable {
-
-    @Getter
-    private int level;
-
-    public ComparetorObject(int level) {
-        this.level = level;
-    }
+public class ComparatorObject implements Comparator<ComparableObject> {
 
     @Override
-    public int compareTo(ComparetorObject o) {
-        return level - o.level;
+    public int compare(ComparableObject o1, ComparableObject o2) {
+        return o2.getLevel() - o1.getLevel();
     }
 }

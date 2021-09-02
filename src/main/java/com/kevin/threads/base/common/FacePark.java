@@ -1,6 +1,7 @@
 package com.kevin.threads.base.common;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * @author dinghaifeng
@@ -9,29 +10,12 @@ import java.util.concurrent.TimeUnit;
  */
 public class FacePark {
     public static void main(String[] args) {
-        FacePark lock = new FacePark();
         Thread t1 = new Thread(() -> {
-            try {
-                System.out.println("t1开始执行");
-                TimeUnit.SECONDS.sleep(5);
-                System.out.println("t1执行完成");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
-        Thread t2 = new Thread(() -> {
-            try {
-                System.out.println("t2执行 -- t1.join()");
-                t1.join();
-                System.out.println("t2开始执行");
-                TimeUnit.SECONDS.sleep(2);
-                System.out.println("t2执行完成");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            Thread.currentThread().interrupt();
+            LockSupport.park();
+            System.out.println("park完成");
         });
         t1.start();
-        t2.start();
         System.out.println("主流程完成");
     }
 }

@@ -1,5 +1,7 @@
 package com.kevin.threads.base.common;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author dinghaifeng
  * @date 2021-08-31 17:36:20
@@ -8,19 +10,28 @@ package com.kevin.threads.base.common;
 public class FaceJoin {
     public static void main(String[] args) {
         FaceJoin lock = new FaceJoin();
-        new Thread(() -> {
-            Thread.currentThread().interrupt();
-            synchronized (lock) {
-                try {
-//                Thread.sleep(10000);
-                    lock.wait();
-//                    LockSupport.park();//不抛异常
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    System.out.println("抛出InterruptedException异常");
-                }
-                System.out.println("over");
+        Thread t1 = new Thread(() -> {
+            try {
+                System.out.println("t1开始执行");
+                TimeUnit.SECONDS.sleep(5);
+                System.out.println("t1执行完成");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        }).start();
+        });
+        Thread t2 = new Thread(() -> {
+            try {
+                System.out.println("t2执行 -- t1.join()");
+                t1.join();
+                System.out.println("t2开始执行");
+                TimeUnit.SECONDS.sleep(2);
+                System.out.println("t2执行完成");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        t1.start();
+        t2.start();
+        System.out.println("主流程完成");
     }
 }
