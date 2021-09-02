@@ -20,9 +20,7 @@ public class FaceSupplier {
         Supplier<FaceSupplier> beanS2 = FaceSupplier::new;
         System.out.println(beanS2.get());
         System.out.println(beanS1.get().equals(beanS2.get()));
-        Supplier<Integer> integerSupplier = () -> {
-            return 9;
-        };
+        Supplier<Integer> integerSupplier = () -> 9;
         System.out.println(integerSupplier.get());
     }
 
