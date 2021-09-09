@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.io.Serializable;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2021-09-01 18:30:46
  * @desc
  */

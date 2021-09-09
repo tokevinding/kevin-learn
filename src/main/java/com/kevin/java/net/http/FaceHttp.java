@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2021-09-02 15:10:02
  * @desc
  */
@@ -28,7 +28,7 @@ public class FaceHttp {
 
     public static void get() {
         try {
-            request("http://gtw.qa.enmonster.com/product-eboss-ms/shop/price/lock/type/list", RequestMethod.GET, null);
+            request("http://localhost:8122/shop/price/lock/type/list", RequestMethod.GET, null);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,7 +36,7 @@ public class FaceHttp {
 
     public static void post() {
         try {
-            request("http://gtw.qa.enmonster.com/product-eboss-ms/shop/price/check/lock/record", RequestMethod.GET, new RequestBodyParam(172451L));
+            request("http://localhost:8122/shop/price/check/lock/record", RequestMethod.GET, new RequestBodyParam(172451L));
         } catch (IOException e) {
             e.printStackTrace();
         }

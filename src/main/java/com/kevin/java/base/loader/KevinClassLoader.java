@@ -82,7 +82,7 @@ public class KevinClassLoader extends ClassLoader {
 //     * @throws IllegalAccessException
 //     */
 //    public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException,SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-//        args = new String[]{"/Users/enmonster/Documents/dev/workspace/kevin/kevin-learn-technology/kevin-learn/src/main/java/com/kevin/java/base/loader/notInPath/NotInClassPathClass.java"};
+//        args = new String[]{"/Users/er/Documents/dev/workspace/kevin/kevin-learn-technology/kevin-learn/src/main/java/com/kevin/java/base/loader/notInPath/NotInClassPathClass.java"};
 //        // TODO Auto-generated method stub
 //        if (args.length == 0) {
 //            System.out.println("没有类啊");

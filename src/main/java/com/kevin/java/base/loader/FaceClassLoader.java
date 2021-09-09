@@ -11,7 +11,7 @@ public class FaceClassLoader {
 
     public static void main(String[] args) throws ClassNotFoundException {
         //这个类class的路径
-        String classPath = "/Users/enmonster/Documents/dev/workspace/kevin/kevin-learn-technology/kevin-learn/src/main/java/com/kevin/java/base/loader/notInPath/NotInClassPathClass.class";
+        String classPath = "/Users/er/Documents/dev/workspace/kevin/kevin-learn-technology/kevin-learn/src/main/java/com/kevin/java/base/loader/notInPath/NotInClassPathClass.class";
 
         KevinClassLoader myClassLoader = new KevinClassLoader(classPath);
         //类的全称

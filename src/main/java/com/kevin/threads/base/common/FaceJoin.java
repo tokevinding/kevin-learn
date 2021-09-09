@@ -3,7 +3,7 @@ package com.kevin.threads.base.common;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2021-08-31 17:36:20
  * @desc
  */

@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2020-11-19 13:54:11
  * @desc HashMap核心参数分析
  */

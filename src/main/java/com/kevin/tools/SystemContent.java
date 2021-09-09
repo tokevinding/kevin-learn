@@ -43,7 +43,7 @@ public class SystemContent {
     /**
      * 默认文件基本路径
      */
-    public static final String DEFAULT_BASE_PATH = "/Users/enmonster/Documents/dev/data/general/";
+    public static final String DEFAULT_BASE_PATH = "/Users/er/Documents/dev/data/general/";
 
     /**
      * 系统默认单批次处理数量

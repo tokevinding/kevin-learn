@@ -3,7 +3,7 @@ package com.kevin.java.stack;
 import java.util.Stack;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2021-09-01 18:21:41
  * @desc
  */

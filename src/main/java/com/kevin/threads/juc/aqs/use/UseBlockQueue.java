@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2021-04-25 18:28:31
  * @desc 阻塞队列测试使用
  */

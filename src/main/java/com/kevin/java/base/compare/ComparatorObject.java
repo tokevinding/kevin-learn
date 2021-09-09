@@ -3,7 +3,7 @@ package com.kevin.java.base.compare;
 import java.util.Comparator;
 
 /**
- * @author dinghaifeng
+ * @author kevin
  * @date 2021-09-01 18:30:46
  * @desc
  */
